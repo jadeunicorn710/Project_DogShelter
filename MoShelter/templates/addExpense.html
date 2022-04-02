@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Mo's Mutt House: Add Expense</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../static/content/sb-admin-2.min.css" rel="stylesheet">
+
+    <!--  Bootstrap style for Datatables-->
+    <link href="../static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../static/vendor/DatePicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link href="../static/vendor/Selectpicker/css/bootstrap-select.min.css" rel="stylesheet">
+
+    <!--  Enable and disable dropdown list function-->
+    <script>
+        function disable() {
+            document.getElementById("vendor").disabled = true;
+        }
+        function enable() {
+            document.getElementById("vendor").disabled = false;
+        }
+
+        function showHideControl() { $('#vname').toggle(); }
+    </script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('home') }}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-dog"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Mo's Mutt House</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('dogDetails') }}?dogId={{dogId}}">
+                    <i class="fas fa-fw fa-backward"></i>
+                    <span>Back to {{dogName}}'s Details</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dog Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-dog"></i>
+                    <span>Dog</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Dog Utilities:</h6>
+                        {% if availableSpaces <= 0 %}
+                        <button type="button" class="collapse-item btn btn-link">Add Dog <span class="badge badge-pill badge-danger">No Spaces Left</span></button>
+                        {% else %}
+                        <a class="collapse-item" href="{{ url_for('addDog') }}">Add Dog <span class="badge badge-pill badge-success">Spaces Available</span></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-edit"></i>
+                    <span>Applications</span>
+                </a>
+                <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Application Utilities:</h6>
+                        <a class="collapse-item" href="{{ url_for('addAdoptionApplication') }}">Add Adoptiion Application</a>
+                        {% if isAdmin == 1 %}<a class="collapse-item" href="{{ url_for('viewAdoptionApplication') }}">Application Review</a>{% endif %}
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            {% if isAdmin == 1 %}
+            <hr class="sidebar-divider">
+
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Report Utilities:</h6>
+                        <a class="collapse-item" href="{{ url_for('viewAnimalControlReport') }}">Animal Control Report</a>
+                        <a class="collapse-item" href="{{ url_for('viewMonthlyAdoptionReport') }}">Monthly Adoption Report</a>
+                        <a class="collapse-item" href="{{ url_for('viewExpenseAnalysisReport') }}">Expense Analysis</a>
+                        <a class="collapse-item" href="{{ url_for('viewVolunteerLookupReport') }}">Voulunteer Lookup</a>
+                    </div>
+                </div>
+            </li>
+            {% endif %}
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Alerts -->
+                        {% if isAdmin == 1 %}
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                {% if pendingRevsNum > 0 %}
+                                <span class="badge badge-danger badge-counter">{{pendingRevsNum}}</span>
+                                {% endif %}
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Pending Applications Center
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {% if pendingRevsNum <= 0 %}
+                                        <div class="small text-gray-500">No Pending Documents</div>
+                                        <span class="font-weight-bold">There are no pending applications to review!</span>
+                                        {% else %}
+                                        <div class="small text-gray-500">Pending Documents</div>
+                                        <span class="font-weight-bold">There are {{pendingRevsNum}} pending applications to review!</span>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="{{ url_for('viewAdoptionApplication') }}">Go To Review Center</a>
+                            </div>
+                        </li>
+                        {% endif %}
+
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ fullname }}</span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Successful Expense Creation <i class="fas fa-check-circle"></i></h5>
+                                </div>
+                                <div class="modal-body" id="addedBody">
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-secondary" href="{{ url_for('home') }}">Dashboard</a>
+                                    <a class="btn btn-primary" id="dogDetailHref" href="/DogDetail?dogId=">Dog Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">Client Side Error <i class="fas fa-times"></i></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="addedBodyError">
+                                    Please make sure all of the required fields have been populated
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page Heading -->
+                    <form class="well form-horizontal" id="addExpenseForm">
+                        <fieldset>
+                            <input name="username" type="text" value="{{ username }}" required hidden />
+                            <input name="dogId" type="text" value="{{ dogId }}" required hidden />
+                            <input name="checkForName" id="checkBoxValue" type="text" value="off" required hidden />
+                            <!-- Text input-->
+                            <!-- Form Name -->
+                            <legend><center><h2><b>{{dogName}}'s Expense Addition Form</b></h2></center></legend><br>
+                            <!-- Date of Expense -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Date Of Expense</label>
+                                <div class="col-md-4 inputGroupContainer">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-primary" type="button" disabled>
+                                                <i class="fas fa-calendar fa-sm"></i>
+                                            </button>
+                                        </div>
+                                        <input id="datePick" name="date" type="text" class="form-control date" readonly required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Expense Amount -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Expense Amount</label>
+                                <div class="col-md-6 inputGroupContainer">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-primary" type="button" disabled>
+                                                <i class="fas fa-address-card fa-sm"></i>
+                                            </button>
+                                        </div>
+                                        <input id="ExpenseAmount" name="expense_amount" placeholder="Expense Amount" class="form-control" type="number" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Optional Description -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Optional Description</label>
+                                <div class="col-md-6 inputGroupContainer">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-primary" type="button" disabled>
+                                                <i class="fas fa-address-card fa-sm"></i>
+                                            </button>
+                                        </div>
+                                        <textarea name="description" maxlength=250 class="form-control" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vendor Name -->
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="unknownVendorCheck">
+                                <label class="form-check-label" for="exampleCheck1">Create New Vendor</label>
+                            </div>
+                            <br />
+                            <div class="form-group" id="vnameDiv" style="display:none">
+                                <label class="col-md-4 control-label">New Vendor</label>
+                                <div class="col-md-6 inputGroupContainer">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-primary" type="button" disabled>
+                                                <i class="fas fa-address-card fa-sm"></i>
+                                            </button>
+                                        </div>
+                                        <input id="vname" name="vname" placeholder="New Vendor Name" class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="vendorNameDiv">
+                                <label class="col-md-6 control-label">Established Vendors</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <select id="vendor" name="vendor" data-live-search="true" required>
+                                            <option value="">Choose A Vendor</option>
+                                            {% for vendor in vendors %}
+                                            <option value="{{ vendor [0] }}">{{ vendor [0]}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enable and disable vendor dropdown list -->
+                            <!-- <div class="form-check"> -->
+                            <!-- <input type="button" onclick="disable()" value="New Vendor">
+    <input type="button" onclick="enable()" value="Cancel"> -->
+                            <!-- <input type="button" onclick="disable()" value="New Vendor"> -->
+                            <!-- <label class="form-check-label" for="exampleCheck1">If Vendor Is Not Found Check Here</label> -->
+                            <!-- <input type="button" onclick="enable()" value="Cancel"> -->
+                            <!-- <label class="form-check-label" for="exampleCheck1">Cancel</label> -->
+                            <!-- </div> -->
+                            <!-- Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"></label>
+                                <div class="col-md-4">
+                                    <br>
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button id="addExpense" type="button" class="btn btn-warning">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="fas fa-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Mo's Mutt House</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../static/scripts/sb-admin-2.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../static/scripts/FunctionsList.js"></script>
+    <script src="../static/vendor/Datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../static/vendor/Selectpicker/js/bootstrap-select.min.js"></script>
+
+</body>
+
+</html>

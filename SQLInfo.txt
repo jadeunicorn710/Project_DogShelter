@@ -1,0 +1,75 @@
+Files containing the SQL implemented in our project:
+
+1. views.py:
+
+   a. Log-in SQL: login() function
+   b. Get available spaces in shelter SQL: 
+         home() function
+         dogDetails() function
+         addAdoptionApplication() function
+         addDog() function
+         viewAdoptionApplication() function
+         addAdoption() function
+         addExpenses() function
+         viewAnimalControlReport() function
+         viewExpenseAnalysisReport() function
+         viewVolunteerLookupReport() function
+         viewMonthlyAdoptionReport() function
+   c. Get all dog breed names SQL: dogDetails() function, addDog() function
+   d. Show dog details SQL: dogDetails() function
+   e. Get associated dog expense SQL: dogDetails() function
+   f. Get associated dog adoption fee SQL: addAdoption() function
+   g. Get all vendor names SQL: addExpenses() function
+   h. Get all surrender monthly summaries in the animal control report SQL: viewAnimalControlReport() function
+   i. Get all expense monthly summaries in the animal control report SQL: viewAnimalControlReport() function
+   j. Get all rescued-dog monthly summaries in the animal control report SQL: viewAnimalControlReport() function
+   k. Get the number of pending applications SQL: 
+         home() function
+         dogDetails() function
+         addAdoptionApplication() function
+         addDog() function
+         viewAdoptionApplication() function
+         addAdoption() function
+         addExpenses() function
+         viewAnimalControlReport() function
+         viewExpenseAnalysisReport() function
+         viewVolunteerLookupReport() fucntion
+         viewMonthlyAdoptionReport() function
+
+2. RestAPI.py:
+
+   a. Show dogs in dashboard SQL: api_Get_Dashboard() function
+   b. Get associated dog expenses: api_Get_GetExpenses() function
+   c. Compare dog name SQL: api_Get_DogNameComparison()
+   d. Compare microchip ID value SQL: api_Get_MicroChipComparison()
+   e. Get applicant info for adoption SQL: api_Get_Applicant_For_Adoption() function
+   f. Verify applicant email SQL: api_Get_Email_Validation() function
+   g. Get all applications (approved, rejected, pending) SQL: api_Get_All_Applications() function
+   h. Add adoption application SQL: api_Get_Add_Application() function
+   i. Add a dog SQL: api_Post_Add_Dog() function
+   j. Add dog breed name SQL: api_Post_Add_Dog() function
+   k. Add dog microchip id SQL: api_Post_Add_Dog() function
+   l. Edit dog details (sex, alteration status, microchip id, breed name) SQL: api_Post_Edit_Dog() function
+   m. Add dog expense SQL: api_Get_Add_Expenses() function
+   n. Update approved application SQL:api_Get_Add_Adoption() function
+   o. Update dog to adopted SQL: api_Get_Add_Adoption() function
+   p. Review application SQL: api_Get_Review_Application() function
+
+3. AnimalControlReport.py:
+
+   a. Show detailed dog info of animal control report for current month SQL: api_Get_Animal_Control_Report_1() function
+   b. Show detailed dog info of animal control report for current month-1 SQL: api_Get_Animal_Control_Report_2() function
+   c. Show detailed dog info of animal control report for current month-2 SQL: api_Get_Animal_Control_Report_3() function
+   d. Show detailed dog info of animal control report for current month-3 SQL: api_Get_Animal_Control_Report_4() function
+   e. Show detailed dog info of animal control report for current month-4 SQL: api_Get_Animal_Control_Report_5() function
+   f. Show detailed dog info of animal control report for current month-5 SQL: api_Get_Animal_Control_Report_6() function
+   g. Show detailed dog info of animal control report for current month-6 SQL: api_Get_Animal_Control_Report_7() function
+
+4. MonthlyAdoptionReport.py:
+   Show detailed monthly surrender/adoption/expenses/adoptionfee/netprofit report for the last 12 months SQL: api_Get_Expense_Analysis_Report() function
+
+5. ExpenseAnalysisReport.py:
+   Show detailed expense analysis report for all vendors SQL: api_Get_Expense_Analysis_Report() function
+
+6. VolunteerLookupReport.py:
+   Show volunteer lookup report for all matched volunteers SQL: api_Get_Volunteer_Lookup_Report() function
